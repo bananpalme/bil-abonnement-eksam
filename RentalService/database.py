@@ -52,8 +52,6 @@ def init_database():
         )
     """)
 
-    cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_car ON rentals(car_id)")
-
     
 
     # Dummy data
@@ -150,24 +148,21 @@ def get_cars():
         for car in cars
     ]
 
-def get_client_by_name(name):
+def get_client_by_id(client_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM clients WHERE first_name = ?', (name,))
-
-    clients = cursor.fetchall()
+    cursor.execute('SELECT * FROM clients WHERE id = ?', (client_id,))
+    row = cursor.fetchone()
 
     conn.close()
     
-    return [
-        {
-            'id': client['id'],
-            'first_name': client['first_name'],
-            'last_name': client['last_name']
-        }
-        for client in clients
-    ]
+    return {
+        'id': row['id'],
+        'first_name': row['first_name'],
+        'last_name': row['last_name']
+    }
+    
 
 def make_new_contract(client_id, car_id, months, monthly_rate, total_cost):
     conn = get_db_connection()
