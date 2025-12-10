@@ -52,9 +52,12 @@ def init_database():
         )
     """)
 
-    """
-        Dummy data
-    """
+    cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_car ON rentals(car_id)")
+
+    
+
+    # Dummy data
+
     cursor.execute("SELECT COUNT(*) FROM clients")
     count = cursor.fetchone()[0]
     if count == 0:
@@ -166,12 +169,12 @@ def get_client_by_name(name):
         for client in clients
     ]
 
-def make_new_contract(client_id, car_id, months, daily_rate, total_cost):
+def make_new_contract(client_id, car_id, months, monthly_rate, total_cost):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO rentals (client_id, car_id, months, daily_rate, total_cost) VALUES (?, ?, ?, ?, ?)'
-                   , (client_id, car_id, months, daily_rate, total_cost))
+    cursor.execute('INSERT INTO rentals (client_id, car_id, months, monthly_rate, total_cost) VALUES (?, ?, ?, ?, ?)'
+                   , (client_id, car_id, months, monthly_rate, total_cost))
 
     conn.commit()
 
@@ -191,7 +194,7 @@ def get_all_contracts():
             'client_id': cont['client_id'],
             'car_id': cont['car_id'],
             'months': cont['months'],
-            'daily_rate': cont['daily_rate'],
+            'monthly_rate': cont['monthly_rate'],
             'total_cost': cont['total_cost']
         }
         for cont in contracts

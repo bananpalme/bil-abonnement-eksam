@@ -37,12 +37,5 @@ def cars():
 
     return jsonify(data), response.status_code
 
-@app.route('/api/rental', methods=['GET'])
-def rental():
-    response = requests.get(f"{RENTAL_SERVICE_URL}/cars")
-    data = response.json()
-
-    return jsonify(data), response.status_code
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

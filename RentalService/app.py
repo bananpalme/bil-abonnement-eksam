@@ -26,13 +26,13 @@ def new_contract():
     first_name = data.get("first_name")
     car_id = data.get("car_id")
     months = data.get("months")
-    daily_rate = data.get("daily_rate")
-    total_cost = months * daily_rate
+    monthly_rate = data.get("monthly_rate")
+    total_cost = months * monthly_rate
 
     client = get_client_by_name(first_name)
     client_id = client[0]['id']
 
-    make_new_contract(client_id, car_id, months, daily_rate, total_cost)
+    make_new_contract(client_id, car_id, months, monthly_rate, total_cost)
 
     return jsonify({"message": "Rental contract created"}), 201
 
