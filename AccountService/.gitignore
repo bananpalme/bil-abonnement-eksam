@@ -1,5 +1,5 @@
 #database
-rental_contracts.db
+accounts.db
 
 # python cache
 __pycache__/
