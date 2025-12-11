@@ -6,42 +6,66 @@ app = Flask(__name__)
 
 # Service URLs
 RENTAL_SERVICE_URL = os.environ.get("RENTAL_SERVICE_URL", "http://localhost:5001")
-
+ACCOUNT_SERVICE_URL = os.environ.get("ACCOUNT_SERVICE_URL", "http://localhost:5002")
 
 # Rental Service routes
+
 @app.route('/api/client', methods=['GET'])
 def client_overview():
-    response = requests.get(f"{RENTAL_SERVICE_URL}/client")
-    data = response.json()
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.get(f"{RENTAL_SERVICE_URL}/client", headers=headers)
+    return jsonify(response.json()), response.status_code
 
-    return jsonify(data), response.status_code
 
 @app.route('/api/client/<int:client_id>', methods=['GET'])
 def client_by_id(client_id):
     response = requests.get(f"{RENTAL_SERVICE_URL}/client/{client_id}")
-    data = response.json()
+    return jsonify(response.json()), response.status_code
 
-    return jsonify(data), response.status_code
 
 @app.route('/api/contract', methods=['POST'])
 def make_contract():
     response = requests.post(f"{RENTAL_SERVICE_URL}/contract", json=request.get_json())
-    data = response.json()
+    return jsonify(response.json()), response.status_code
 
-    return jsonify(data), response.status_code
 
 @app.route('/api/contract', methods=['GET'])
 def see_contracts():
     response = requests.get(f"{RENTAL_SERVICE_URL}/contract")
-    data = response.json()
+    return jsonify(response.json()), response.status_code
 
-    return jsonify(data), response.status_code
 
 @app.route('/api/cars', methods=['GET'])
 def cars():
     response = requests.get(f"{RENTAL_SERVICE_URL}/cars")
-    data = response.json()
+    return jsonify(response.json()), response.status_code
 
+
+# Account service routes
+
+@app.route('/api/profile', methods=['POST'])
+def register():
+    response = requests.post(f"{ACCOUNT_SERVICE_URL}/profile", json=request.get_json())
+    return jsonify(response.json()), response.status_code
+
+
+@app.route('/api/profile', methods=['GET'])
+def view_profile():
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.get(f"{ACCOUNT_SERVICE_URL}/profile", headers=headers)
+    return jsonify(response.json()), response.status_code
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    response = requests.post(f"{ACCOUNT_SERVICE_URL}/login",json=request.get_json())
+    data = response.json()
+    
+    # Forward the authorization from response
+    if "Authorization" in response.headers:
+        headers = {"Authorization": response.headers["Authorization"]}
+        return jsonify(data), response.status_code, headers
+    
     return jsonify(data), response.status_code
 
 if __name__ == '__main__':

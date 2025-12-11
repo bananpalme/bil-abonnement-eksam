@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from database import get_all_clients, get_cars, get_client_by_id, make_new_contract, get_all_contracts
 from dotenv import load_dotenv
 import os
@@ -7,10 +7,21 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = os.getenv('KEY')
+jwt = JWTManager(app)
     
 # show all clients
 @app.route('/client', methods=['GET'])
+@jwt_required()
 def client_overview():
+    current_user = get_jwt_identity()
+    claims = get_jwt()
+    role = claims.get("role")
+    
+    if role != "dataregistry":
+        return jsonify({"message": "Unnauthorized"}), 403
+
     clients = get_all_clients()
 
     return jsonify(clients)
