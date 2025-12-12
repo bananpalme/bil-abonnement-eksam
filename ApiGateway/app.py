@@ -16,6 +16,27 @@ def client_overview():
 
     return jsonify(data), response.status_code
 
+@app.route('/api/client/<int:client_id>', methods=['GET'])
+def client_by_id(client_id):
+    response = requests.get(f"{RENTAL_SERVICE_URL}/client/{client_id}")
+    data = response.json()
+
+    return jsonify(data), response.status_code
+
+@app.route('/api/contract', methods=['POST'])
+def make_contract():
+    response = requests.post(f"{RENTAL_SERVICE_URL}/contract", json=request.get_json())
+    data = response.json()
+
+    return jsonify(data), response.status_code
+
+@app.route('/api/contract', methods=['GET'])
+def see_contracts():
+    response = requests.get(f"{RENTAL_SERVICE_URL}/contract")
+    data = response.json()
+
+    return jsonify(data), response.status_code
+
 @app.route('/api/cars', methods=['GET'])
 def cars():
     response = requests.get(f"{RENTAL_SERVICE_URL}/cars")
