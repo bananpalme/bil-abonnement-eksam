@@ -19,7 +19,7 @@ def client_overview():
     claims = get_jwt()
     role = claims.get("role")
     
-    if role != "dataregistry":
+    if role not in [ "dataregistry", "admin"]:
         return jsonify({"message": "Unnauthorized"}), 403
 
     clients = get_all_clients()

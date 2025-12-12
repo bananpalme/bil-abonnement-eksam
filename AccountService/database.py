@@ -20,7 +20,7 @@ def init_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            role TEXT NOT NULL CHECK(role IN ('dataregistry', 'damages'))
+            role TEXT NOT NULL CHECK(role IN ('dataregistry', 'damages', 'admin'))
         )
     """)
 

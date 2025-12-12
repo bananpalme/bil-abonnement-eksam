@@ -59,14 +59,22 @@ def view_profile():
 @app.route('/api/login', methods=['POST'])
 def login():
     response = requests.post(f"{ACCOUNT_SERVICE_URL}/login",json=request.get_json())
+
+    auth_header = response.headers.get("Authorization")
+    token = None
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ")[1]
+
     data = response.json()
+
+    role = data.get("role")
+    username = data.get("username")
     
-    # Forward the authorization from response
-    if "Authorization" in response.headers:
-        headers = {"Authorization": response.headers["Authorization"]}
-        return jsonify(data), response.status_code, headers
-    
-    return jsonify(data), response.status_code
+    return jsonify({
+        "access_token": token,
+        "role": role,
+        "username": username
+    }), response.status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

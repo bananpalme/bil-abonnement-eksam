@@ -60,7 +60,11 @@ def login():
     # Create JWT token
     token = create_access_token(identity=username, additional_claims={"role": role})
 
-    response = make_response(jsonify({'message': 'Login successful'}), 200)
+    response = make_response(jsonify({
+        'message': 'Login successful',
+        'username': username,
+        'role': role
+    }), 200)
     response.headers['Authorization'] = f'Bearer {token}'
     return response
 
