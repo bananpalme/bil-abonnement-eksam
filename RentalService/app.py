@@ -8,7 +8,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.config['JWT_SECRET_KEY'] = os.getenv('KEY')
+app.config['JWT_SECRET_KEY'] = os.environ.get('KEY')
 jwt = JWTManager(app)
     
 # show all clients
@@ -40,7 +40,14 @@ def show_cars():
     return jsonify(cars)
 
 @app.route('/contract', methods=['POST'])
+@jwt_required()
 def new_contract():
+    claims = get_jwt()
+    role = claims.get("role")
+    
+    if role not in [ "dataregistry", "admin"]:
+        return jsonify({"message": "Unnauthorized"}), 403
+
     data = request.json
     client_id = data.get("client_id")
     car_id = data.get("car_id")
@@ -53,9 +60,17 @@ def new_contract():
     return jsonify({"message": "Rental contract created"}), 201
 
 @app.route('/contract', methods=['GET'])
+@jwt_required()
 def all_contracts():
-    contracts = get_all_contracts()
-
-    return jsonify(contracts)
+    claims = get_jwt()
+    role = claims.get("role")
+    if role not in ["dataregistry", "admin"]:
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    try:
+        contracts = get_all_contracts()
+        return jsonify(contracts)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 app.run(host='0.0.0.0', port=5001) 

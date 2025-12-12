@@ -15,7 +15,7 @@ if resp_clients.status_code == 200:
     clients = resp_clients.json()
     client_map = {f"{c['first_name']} {c['last_name']}": c['id'] for c in clients}
 else:
-    st.error("Failed to load clients")
+    st.error(f"Failed to load clients: {resp_clients.status_code}")
 
 
 resp_cars = requests.get(f"{API}/cars", headers=headers)
@@ -58,10 +58,11 @@ if client_map and car_map:
             else:
                 st.error(resp.json().get("message", "Error creating contract"))
 
+headers = {"Authorization": f"Bearer {st.session_state.token}"}
 resp_contracts = requests.get(f"{API}/contract", headers=headers)
 
 if resp_contracts.status_code == 200:
     contracts = resp_contracts.json()
     st.table(contracts)
 else:
-    st.error("Failed to load clients")
+    st.error("Failed to load contracts")
