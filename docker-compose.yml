@@ -3,7 +3,7 @@ services:
     build: ./AccountService
     container_name: account-service
     environment:
-      - KEY=123
+      - KEY=1234
     ports:
       - "5002:5002"
 
@@ -11,7 +11,7 @@ services:
     build: ./RentalService
     container_name: rental-service
     environment:
-      - KEY=123
+      - KEY=1234
     ports:
       - "5001:5001"
 
