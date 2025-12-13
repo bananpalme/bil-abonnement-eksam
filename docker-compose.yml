@@ -1,20 +1,33 @@
-version: "3.9"
-
 services:
-  rental_service:
-    build:
-      context: ./RentalService
-    container_name: rental_service
+  account-service:
+    build: ./AccountService
+    container_name: account-service
+    environment:
+      - KEY=123
+    ports:
+      - "5002:5002"
+
+  rental-service:
+    build: ./RentalService
+    container_name: rental-service
+    environment:
+      - KEY=123
     ports:
       - "5001:5001"
 
-  api_gateway:
-    build:
-      context: ./ApiGateway
-    container_name: api_gateway
+  api-gateway:
+    build: ./APIGateway
+    container_name: api-gateway
     ports:
       - "5000:5000"
-    depends_on:
-      - rental_service
     environment:
-      - RENTAL_SERVICE_URL=http://rental_service:5001
+      - ACCOUNT_SERVICE_URL=http://account-service:5002
+      - RENTAL_SERVICE_URL=http://rental-service:5001
+
+  ui-service:
+    build: ./UIService
+    container_name: ui-service
+    ports:
+      - "8501:8501"
+    environment:
+      - API_GATEWAY_URL=http://api-gateway:5000/api
