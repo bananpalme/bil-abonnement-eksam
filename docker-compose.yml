@@ -23,6 +23,7 @@ services:
       - "5002:5002"
     environment:
       - FLASK_ENV=development
+      - KEY=1234
       # Du kan her definere DATABASE_URL, hvis du vil overskrive "sqlite:///./returnservice_local.db"
       # - DATABASE_URL=...
 

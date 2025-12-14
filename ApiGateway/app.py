@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Service URLs
 RENTAL_SERVICE_URL = os.environ.get("RENTAL_SERVICE_URL", "http://localhost:5001")
-Return_SERVICE_URL = os.environ.get("RETURN_SERVICE_URL", "http://localhost:5002")
+RETURN_SERVICE_URL = os.environ.get("RETURN_SERVICE_URL", "http://localhost:5002")
 ACCOUNT_SERVICE_URL = os.environ.get("ACCOUNT_SERVICE_URL", "http://localhost:5003")
 DAMAGE_SERVICE_URL = os.environ.get("DAMAGE_SERVICE_URL", "http://localhost:5004")
 
@@ -53,7 +53,8 @@ def see_contracts():
 
 @app.route('/api/cars', methods=['GET'])
 def cars():
-    response = requests.get(f"{RENTAL_SERVICE_URL}/cars")
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.get(f"{RENTAL_SERVICE_URL}/cars", headers=headers)
     return jsonify(response.json()), response.status_code
 
 
@@ -96,18 +97,23 @@ def login():
 # Return Service routes
 @app.route('/api/return/log', methods=['POST'])
 def log_return():
-
-    response = requests.post(f"{Return_SERVICE_URL}/return/log", json=request.json)
-    data = response.json()
-
-    return jsonify(data), response.status_code
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.post(f"{RETURN_SERVICE_URL}/return/log", json=request.json, headers=headers)
+    try:
+        data = response.json()
+        return jsonify(data), response.status_code
+    except ValueError:
+        return response.text, response.status_code
 
 @app.route('/api/return/key_pickup', methods=['POST'])
 def key_pickup():
-    response = requests.post(f"{Return_SERVICE_URL}/return/key_pickup", json=request.json)
-    data = response.json()
-
-    return jsonify(data), response.status_code
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.post(f"{RETURN_SERVICE_URL}/return/key_pickup", json=request.json, headers=headers)
+    try:
+        data = response.json()
+        return jsonify(data), response.status_code
+    except ValueError:
+        return response.text, response.status_code
 
 # Damage Service
 
@@ -118,13 +124,15 @@ def view_damage_types():
 
 @app.route('/api/car-damages', methods=['GET'])
 def see_current_car_damages():
-    response = requests.get(f"{DAMAGE_SERVICE_URL}/car-damages")
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.get(f"{DAMAGE_SERVICE_URL}/car-damages", headers=headers)
     return jsonify(response.json()), response.status_code
 
 @app.route('/api/car-damages', methods=['POST'])
 def report_new_damages():
-    response = requests.post(f"{DAMAGE_SERVICE_URL}/car-damages", json=request.get_json())
-    return jsonify(response.json())
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.post(f"{DAMAGE_SERVICE_URL}/car-damages", json=request.get_json(), headers=headers)
+    return jsonify(response.json()), response.status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

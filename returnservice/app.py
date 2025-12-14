@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
 from datetime import datetime
 from database import CarReturn, get_db, init_db # Import af databasemodeller
-from sqlalchemy.orm.exc import NoResultFound
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 import os
-import time
-
+# JWT setup
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.environ.get('KEY')
+jwt = JWTManager(app)
 
 # --- Database Initialisering ---
 # Sikrer at databasen og tabellerne er klar ved opstart.
@@ -74,10 +75,17 @@ def log_return():
 # 2. Endpoint: Bekræft Nøgleafhentning (Trin 5)
 # =================================================================
 @app.route('/return/key_pickup', methods=['POST'])
+@jwt_required()
 def key_pickup():
     """
     Opdaterer status, når en medarbejder henter nøglen, og sender besked til kunden.
     """
+    # tjekker at det er den rigtige rolle
+    claims = get_jwt()
+    role = claims.get("role")
+    if role not in [ "dataregistry", "admin"]:
+        return jsonify({"message": "Unnauthorized"}), 403
+
     data = request.json
     
     if 'employee_id' not in data or 'license_plate' not in data:

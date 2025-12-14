@@ -26,15 +26,13 @@ def client_overview():
 
     return jsonify(clients)
 
-# 
-@app.route('/client/<int:client_id>', methods=['GET'])
-def client_by_id(client_id):
-    client = get_client_by_id(client_id)
-
-    return jsonify(client)
-
 @app.route('/cars', methods=['GET'])
+@jwt_required()
 def show_cars():
+    claims = get_jwt()
+    role = claims.get("role")
+    if role not in ["dataregistry", "admin", "damages"]:
+        return jsonify({"message": "Unauthorized"}), 403
     cars = get_cars()
 
     return jsonify(cars)

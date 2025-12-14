@@ -3,6 +3,8 @@ import requests
 import os
 
 API = os.environ.get("API_GATEWAY_URL", "http://localhost:5000/api")
+client_map = {}
+car_map = {}
 
 if st.session_state.role not in ["dataregistry", "admin"]:
     st.error("You are not authorized to view this page.")

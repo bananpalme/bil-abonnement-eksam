@@ -9,6 +9,10 @@ import os # Importér os
 # Vi sætter den nu til at hente fra miljøvariabel
 API_GATEWAY_URL = os.environ.get("API_GATEWAY_URL", "http://127.0.0.1:5000") 
 
+if st.session_state.role not in ["dataregistry", "admin"]:
+    st.error("You are not authorized to view this page.")
+    st.stop()
+
 st.set_page_config(layout="wide", page_title="Bilabonnement - Intern Håndtering")
 st.title("Intern Håndtering af Bilaflevering 🚗")
 
@@ -77,6 +81,8 @@ with tab2:
     lp_pickup = st.text_input("Nummerplade (Afhentning):", key="lp_pickup_input")
     employee_id = st.text_input("Medarbejder ID (Dataregistrering):", key="employee_id_input")
 
+    customer_token = st.session_state.token
+
     if st.button("Bekræft Nøgleafhentning"):
         if lp_pickup and employee_id:
             try:
@@ -85,7 +91,7 @@ with tab2:
                     f"{API_GATEWAY_URL}/return/key_pickup",
                     json={"license_plate": lp_pickup, "employee_id": employee_id},
                     # Antager, at medarbejderen har et gyldigt JWT i headeren
-                    headers={"Authorization": "Bearer SIMULERET_STAFF_JWT"} 
+                    headers={"Authorization": f"Bearer {customer_token}"} 
                 )
 
                 if response.status_code == 200:
@@ -93,7 +99,11 @@ with tab2:
                 elif response.status_code == 404:
                     st.error("Fejl: Ingen aktiv aflevering fundet for denne nummerplade.")
                 else:
-                    st.error(f"Fejl ved afhentning: {response.status_code} - {response.json().get('error', 'Ukendt fejl')}")
+                    try:
+                        err_msg = response.json().get('error', 'Ukendt fejl')
+                    except Exception:
+                        err_msg = response.text[:200] if response.text else 'Ukendt fejl'
+                    st.error(f"Fejl ved afhentning: {response.status_code} - {err_msg}")
 
             except requests.exceptions.ConnectionError:
                 st.error("Kunne ikke oprette forbindelse til Flask Backend.")
