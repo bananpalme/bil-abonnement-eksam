@@ -3,7 +3,7 @@ services:
     build: ./AccountService
     container_name: account-service
     environment:
-      - KEY=123
+      - KEY=1234
     ports:
       - "5003:5003"
 
@@ -11,7 +11,7 @@ services:
     build: ./RentalService
     container_name: rental-service
     environment:
-      - KEY=123
+      - KEY=1234
     ports:
       - "5001:5001"
 
@@ -40,8 +40,9 @@ services:
       - RENTAL_SERVICE_URL=http://rental-service:5001
       - RETURN_SERVICE_URL=http://return-service:5002
       - ACCOUNT_SERVICE_URL=http://account-service:5003
-
-  ui-service:
+      - DAMAGE_SERVICE_URL=http://damage-service:5004
+  
+  ui_service:
     build:
       context: ./UIService
     container_name: ui-service
@@ -53,3 +54,11 @@ services:
       - return-service
     environment:
       - API_GATEWAY_URL=http://api-gateway:5000/api
+
+  damage-service:
+    build: ./DamageService
+    container_name: damage-service
+    environment:
+      - KEY=1234
+    ports:
+      - "5004:5004"
