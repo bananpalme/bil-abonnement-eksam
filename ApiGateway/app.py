@@ -7,6 +7,7 @@ app = Flask(__name__)
 # Service URLs
 RENTAL_SERVICE_URL = os.environ.get("RENTAL_SERVICE_URL", "http://localhost:5002")
 ACCOUNT_SERVICE_URL = os.environ.get("ACCOUNT_SERVICE_URL", "http://localhost:5001")
+DAMAGE_SERVICE_URL = os.environ.get("DAMAGE_SERVICE_URL", "http://localhost:5003")
 
 # Rental Service routes
 
@@ -89,6 +90,23 @@ def login():
         "role": role,
         "username": username
     }), response.status_code
+
+# Damage Service
+
+@app.route('/api/damage-types', methods=['GET'])
+def view_damage_types():
+    response = requests.get(f"{DAMAGE_SERVICE_URL}/damage-types")
+    return jsonify(response.json()), response.status_code
+
+@app.route('/api/car-damages', methods=['GET'])
+def see_current_car_damages():
+    response = requests.get(f"{DAMAGE_SERVICE_URL}/car-damages")
+    return jsonify(response.json()), response.status_code
+
+@app.route('/api/car-damages', methods=['POST'])
+def report_new_damages():
+    response = requests.post(f"{DAMAGE_SERVICE_URL}/car-damages", json=request.get_json())
+    return jsonify(response.json())
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

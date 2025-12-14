@@ -23,6 +23,7 @@ services:
     environment:
       - ACCOUNT_SERVICE_URL=http://account-service:5002
       - RENTAL_SERVICE_URL=http://rental-service:5001
+      - DAMAGE_SERVICE_URL=http://damage-service:5003
 
   ui-service:
     build: ./UIService
@@ -31,3 +32,11 @@ services:
       - "8501:8501"
     environment:
       - API_GATEWAY_URL=http://api-gateway:5000/api
+
+  damage-service:
+    build: ./DamageService
+    container_name: damage-service
+    environment:
+      - KEY=1234
+    ports:
+      - "5003:5003"
