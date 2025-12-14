@@ -45,7 +45,7 @@ with tab1:
             try:
                 # Kald til endpoint for at logge nøgleaflevering
                 response = requests.post(
-                    f"{API_GATEWAY_URL}/api/return/log",
+                    f"{API_GATEWAY_URL}/return/log",
                     json={"license_plate": lp, "contract_id": ci},
                     headers={"Authorization": f"Bearer {customer_token}"} 
                 )
@@ -82,7 +82,7 @@ with tab2:
             try:
                 # Kald til endpoint for nøgleafhentning
                 response = requests.post(
-                    f"{API_GATEWAY_URL}/api/return/key_pickup",
+                    f"{API_GATEWAY_URL}/return/key_pickup",
                     json={"license_plate": lp_pickup, "employee_id": employee_id},
                     # Antager, at medarbejderen har et gyldigt JWT i headeren
                     headers={"Authorization": "Bearer SIMULERET_STAFF_JWT"} 

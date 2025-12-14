@@ -42,7 +42,11 @@ def register(username, password, role):
     if response.status_code == 201:
         st.success("Sucessfully registered")
     else:
-        st.error(response.json().get("message", "Registration failed"))
+        try:
+            msg = response.json().get("message", "Registration failed")
+        except ValueError:
+            msg = response.text or "Registration failed"
+        st.error(msg)
 
 # ui
 if not st.session_state.logged_in:

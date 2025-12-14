@@ -68,4 +68,4 @@ def login():
     response.headers['Authorization'] = f'Bearer {token}'
     return response
 
-app.run(host='0.0.0.0', port=5002)
+app.run(host='0.0.0.0', port=5003)
