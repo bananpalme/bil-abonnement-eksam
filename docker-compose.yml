@@ -5,7 +5,7 @@ services:
     environment:
       - KEY=123
     ports:
-      - "5002:5002"
+      - "5003:5003"
 
   rental-service:
     build: ./RentalService
@@ -15,19 +15,44 @@ services:
     ports:
       - "5001:5001"
 
-  api-gateway:
-    build: ./APIGateway
-    container_name: api-gateway
+  return_service:
+    build:
+      context: ./returnservice
+    container_name: return_service
+    # Host port 5002 -> Container port 5000 (Flask default)
+    ports:
+      - "5002:5002"
+    # Fjernede depends_on: rental_service (unødvendigt)
+    # Sikrer persistens for SQLite-filen i Return Service
+   
+    environment:
+      - FLASK_ENV=development
+      # Du kan her definere DATABASE_URL, hvis du vil overskrive "sqlite:///./returnservice_local.db"
+      # - DATABASE_URL=...
+
+
+  api_gateway:
+    build:
+      context: ./ApiGateway
+    container_name: api_gateway
     ports:
       - "5000:5000"
+    depends_on:
+      - rental_service
+      - return_service
     environment:
-      - ACCOUNT_SERVICE_URL=http://account-service:5002
-      - RENTAL_SERVICE_URL=http://rental-service:5001
+      - RENTAL_SERVICE_URL=http://rental_service:5001
+      - RETURN_SERVICE_URL=http://return_service:5002
 
-  ui-service:
-    build: ./UIService
-    container_name: ui-service
+  ui_service:
+    build:
+      context: ./UIService
+    container_name: ui_service
     ports:
       - "8501:8501"
+    depends_on:
+      - api_gateway
+      - rental_service
+      - return_service
     environment:
-      - API_GATEWAY_URL=http://api-gateway:5000/api
+      - API_GATEWAY_URL=http://api_gateway:5000
