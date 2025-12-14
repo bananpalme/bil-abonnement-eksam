@@ -1,10 +1,17 @@
-version: "3.9"
-
 services:
-  rental_service:
-    build:
-      context: ./RentalService
-    container_name: rental_service
+  account-service:
+    build: ./AccountService
+    container_name: account-service
+    environment:
+      - KEY=123
+    ports:
+      - "5003:5003"
+
+  rental-service:
+    build: ./RentalService
+    container_name: rental-service
+    environment:
+      - KEY=123
     ports:
       - "5001:5001"
 
