@@ -31,7 +31,7 @@ def get_db_session():
 # =================================================================
 # 1. Endpoint: Registrer Afleveringstidspunkt & Modtag Oplysninger (Trin 4)
 # =================================================================
-@app.route('/api/return/log', methods=['POST'])
+@app.route('/return/log', methods=['POST'])
 def log_return():
     """
     Registrerer tidspunkt, nummerplade og kontrakt-ID, når kunden afleverer nøglen.
@@ -73,7 +73,7 @@ def log_return():
 # =================================================================
 # 2. Endpoint: Bekræft Nøgleafhentning (Trin 5)
 # =================================================================
-@app.route('/api/return/key_pickup', methods=['POST'])
+@app.route('/return/key_pickup', methods=['POST'])
 def key_pickup():
     """
     Opdaterer status, når en medarbejder henter nøglen, og sender besked til kunden.
@@ -123,7 +123,7 @@ def notify_customer(license_plate):
 
 if __name__ == '__main__':
     # Brug miljøvariabler så Docker kan styre host/port. Default lytter på 0.0.0.0:5000.
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5002))
     host = os.environ.get('HOST', '0.0.0.0')
     # I dev kører vi med debug=True; i produktion bør dette være False.
     app.run(debug=True, host=host, port=port)

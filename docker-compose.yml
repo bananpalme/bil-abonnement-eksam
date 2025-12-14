@@ -14,7 +14,7 @@ services:
     container_name: return_service
     # Host port 5002 -> Container port 5000 (Flask default)
     ports:
-      - "5002:5000"
+      - "5002:5002"
     # Fjernede depends_on: rental_service (unødvendigt)
     # Sikrer persistens for SQLite-filen i Return Service
    
@@ -35,7 +35,7 @@ services:
       - return_service
     environment:
       - RENTAL_SERVICE_URL=http://rental_service:5001
-      - RETURN_SERVICE_URL=http://return_service:5000
+      - RETURN_SERVICE_URL=http://return_service:5002
 
   ui_service:
     build:
@@ -48,4 +48,4 @@ services:
       - rental_service
       - return_service
     environment:
-      - API_GATEWAY_URL=http://return_service:5000
+      - API_GATEWAY_URL=http://api_gateway:5000
