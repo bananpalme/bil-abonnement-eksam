@@ -37,3 +37,19 @@ Servicen vedligeholder tre centrale tabeller i sin SQLite-database:
 1.  **`clients`**: Basisinformation om kunder.
 2.  **`cars`**: Information om bilflåden.
 3.  **`rentals`**: Relationel data, der forbinder `client_id` og `car_id` med aftalevilkår (`months`, `monthly_rate`).
+
+
+## 🚀 Kom godt i gang
+
+Rental startes automatisk via Docker Compose og lytter på `http://localhost:5001`.
+
+```bash
+# Fra roden af dit projekt (hvor docker-compose.yaml ligger):
+docker-compose up -d --build
+```
+
+Ellers kør det manuelt på port 5001
+```bash
+# Kør det i RentalService folderen
+python app.py
+```
