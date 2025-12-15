@@ -37,3 +37,17 @@ Servicen vedligeholder to centrale datatabeller:
 1.  **`damage_types`**: Indeholder basisinformation om skader (f.eks. "Scratch", "Dent") og den standardiserede `base_cost`.
 2.  **`car_damages`**: Logger hvilke skadetyper der er registreret på specifikke biler (`car_id`) og den præcise `cost_at_time` (da prisen kan ændre sig over tid).
 
+### Kørsel (via Docker Compose)
+
+Damage Service køres automatisk som en del af den overordnede Docker Compose-opsætning og lytter internt på port **5004**.
+
+```bash
+# Fra roden af dit projekt (hvor docker-compose.yaml ligger):
+docker-compose up -d --build
+```
+
+Alternativt hvis det skal køres lokalt
+```bash
+# fra DamageService folderen ./DamageService/
+python app.py
+```
