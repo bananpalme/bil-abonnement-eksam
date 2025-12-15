@@ -62,7 +62,8 @@ def cars():
 # Inspection Service routes
 @app.route('/api/inspection', methods=['POST'])
 def create_inspection():
-    response = requests.post(f"{INSPECTION_SERVICE_URL}/inspection", json=request.get_json())
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.post(f"{INSPECTION_SERVICE_URL}/inspection", json=request.get_json(), headers=headers)
     return jsonify(response.json()), response.status_code
 
 

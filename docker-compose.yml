@@ -25,6 +25,7 @@ services:
     environment:
       # Kan bruges til at sætte DATABASE_URL, hvis du skifter fra SQLite
       - FLASK_ENV=development
+      - KEY=1234
 
   return-service:
     build:

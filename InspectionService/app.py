@@ -1,10 +1,24 @@
 from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from database import get_db_connection
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 app = Flask(__name__)
 
+app.config['JWT_SECRET_KEY'] = os.environ.get('KEY')
+jwt = JWTManager(app)
+
 @app.route("/inspection", methods=["POST"])
+@jwt_required()
 def create_inspection():
+
+    claims = get_jwt()
+    role = claims.get("role")
+    if role not in ["damages", "admin"]:
+        return jsonify({"message": "Unauthorized"}), 403
+
     data = request.json
 
     conn = get_db_connection()

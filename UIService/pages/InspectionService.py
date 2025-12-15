@@ -5,6 +5,10 @@ import os
 
 API_GATEWAY_URL = os.environ.get("API_GATEWAY_URL", "http://localhost:5000/api")
 
+if st.session_state.role not in ["damages", "admin"]:
+    st.error("You are not authorized to view this page.")
+    st.stop()
+
 st.title("Inspection Service")
 
 st.header("Create Inspection")
@@ -46,9 +50,12 @@ if st.button("Save inspection"):
         "date": str(inspection_date)
     }
 
+    headers = {"Authorization": f"Bearer {st.session_state.token}"}
+
     response = requests.post(
         f"{API_GATEWAY_URL}/inspection", # <-- SLUTPUNKTET ER /inspection
-        json=payload
+        json=payload,
+        headers=headers
     )
 
     if response.status_code == 201:
