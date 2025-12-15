@@ -40,3 +40,10 @@ Account Service køres automatisk som en del af den overordnede Docker Compose-o
 ```bash
 # Fra roden af dit projekt (hvor docker-compose.yaml ligger):
 docker-compose up -d --build
+```
+
+Alternativt hvis det skal køres lokalt
+```bash
+# fra AccountService folderen ./Accountservice/
+python app.py
+```
