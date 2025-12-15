@@ -9,6 +9,7 @@ RENTAL_SERVICE_URL = os.environ.get("RENTAL_SERVICE_URL", "http://localhost:5001
 RETURN_SERVICE_URL = os.environ.get("RETURN_SERVICE_URL", "http://localhost:5002")
 ACCOUNT_SERVICE_URL = os.environ.get("ACCOUNT_SERVICE_URL", "http://localhost:5003")
 DAMAGE_SERVICE_URL = os.environ.get("DAMAGE_SERVICE_URL", "http://localhost:5004")
+INSPECTION_SERVICE_URL = os.environ.get("INSPECTION_SERVICE_URL", "http://localhost:5005")
 
 # Rental Service routes
 
@@ -53,6 +54,18 @@ def see_contracts():
 
 @app.route('/api/cars', methods=['GET'])
 def cars():
+    try:
+        response = requests.get(f"{RENTAL_SERVICE_URL}/cars", timeout=10)
+        data = response.json()
+        return jsonify(data), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Could not connect to rental service: {str(e)}"}), 503
+      
+
+# Inspection Service routes
+@app.route('/api/inspection', methods=['POST'])
+def create_inspection():
+    response = requests.post(f"{INSPECTION_SERVICE_URL}/inspection", json=request.get_json())
     headers = {"Authorization": request.headers.get("Authorization")}
     response = requests.get(f"{RENTAL_SERVICE_URL}/cars", headers=headers)
     return jsonify(response.json()), response.status_code
@@ -133,6 +146,14 @@ def report_new_damages():
     headers = {"Authorization": request.headers.get("Authorization")}
     response = requests.post(f"{DAMAGE_SERVICE_URL}/car-damages", json=request.get_json(), headers=headers)
     return jsonify(response.json()), response.status_code
+
+@app.route('/api/inspection/<int:id>', methods=['GET'])
+def get_inspection(id):
+    response = requests.get(f"{INSPECTION_SERVICE_URL}/inspection/{id}")
+    data = response.json()
+
+    return jsonify(data), response.status_code
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)

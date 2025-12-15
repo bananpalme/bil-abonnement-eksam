@@ -1,15 +1,12 @@
-# Brug et officielt Python runtime som base image
 FROM python:3.11-slim
 
 # Sæt arbejdsmappe i containeren
 WORKDIR /app
 
 # Kopier filen med afhængigheder
-# Antager, at du har lavet en samlet requirements.txt i roden af projektet
-# Hvis requirements.txt er i denne mappe, skal du kun skrive 'COPY requirements.txt .'
 COPY requirements.txt .
 
-# Installer Python-afhængigheder (Flask, Streamlit, requests mv.)
+# Installer Python-afhængigheder
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopier hele app-mappen ind i containeren (inkl. pages/)
