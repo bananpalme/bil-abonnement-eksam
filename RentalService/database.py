@@ -91,6 +91,18 @@ def init_database():
             "INSERT INTO cars (make, model, year, license_plate, status) VALUES (?, ?, ?, ?, ?)",
             cars
         )
+
+    cursor.execute("SELECT COUNT(*) FROM rentals")
+    count = cursor.fetchone()[0]
+    if count == 0:
+        contracts = [
+            (1, 2, 6, 4000, 24000),
+            (3, 7, 9, 3250, 29250),
+        ]
+        cursor.executemany(
+            "INSERT INTO rentals (client_id, car_id, months, monthly_rate, total_cost) VALUES (?, ?, ?, ?, ?)",
+            contracts,
+        )
         
     ''' If you need to delete duplicates
     cursor.execute("""
@@ -184,16 +196,16 @@ def get_all_contracts():
 
     conn.close()
 
-    return [
-        {
+    result = []
+    for cont in contracts:
+        result.append({
             'client_id': cont['client_id'],
             'car_id': cont['car_id'],
             'months': cont['months'],
             'monthly_rate': cont['monthly_rate'],
             'total_cost': cont['total_cost']
-        }
-        for cont in contracts
-    ]
+        })
+    return result
 
 
 init_database()
