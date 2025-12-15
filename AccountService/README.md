@@ -44,6 +44,6 @@ docker-compose up -d --build
 
 Alternativt hvis det skal køres lokalt
 ```bash
-# fra AccountService folderen ./Accountservice/
+# fra AccountService folderen ./AccountService/
 python app.py
 ```
