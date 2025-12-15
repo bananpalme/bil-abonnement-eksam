@@ -8,6 +8,17 @@ services:
     ports:
       - "5001:5001"
 
+  inspection_service:
+    build:
+      context: ./InspectionService # Antager du har en Dockerfile i denne mappe
+    container_name: inspection_service
+    ports:
+      # Host port 5003 -> Container port 5003
+      - "5005:5005"
+    environment:
+      # Kan bruges til at sætte DATABASE_URL, hvis du skifter fra SQLite
+      - FLASK_ENV=development
+
   api_gateway:
     build:
       context: ./ApiGateway
@@ -16,5 +27,22 @@ services:
       - "5000:5000"
     depends_on:
       - rental_service
+      - inspection_service
+      
     environment:
       - RENTAL_SERVICE_URL=http://rental_service:5001
+      - INSPECTION_SERVICE_URL=http://inspection_service:5005
+    
+
+
+  ui_service:
+    build:
+      context: ./UIService
+    container_name: ui_service
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api_gateway
+      - rental_service
+    environment:
+      - API_GATEWAY_URL=http://api_gateway:5000

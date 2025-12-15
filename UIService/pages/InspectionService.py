@@ -1,8 +1,9 @@
 import streamlit as st
 import requests
 from datetime import date
+import os
 
-API_GATEWAY_URL = "http://localhost:5000/api"
+API_GATEWAY_URL = os.environ.get("API_GATEWAY_URL", "http://localhost:5000")
 
 st.title("Inspection Service")
 
@@ -46,11 +47,11 @@ if st.button("Save inspection"):
     }
 
     response = requests.post(
-        f"{API_GATEWAY_URL}/inspection",
+        f"{API_GATEWAY_URL}/api/inspection", # <-- SLUTPUNKTET ER /inspection
         json=payload
     )
 
     if response.status_code == 201:
-        st.success("Inspection saved successfully!")
+        st.success("Inspection saved successfully! if damage found, go to DamageService")
     else:
         st.error("Failed to save inspection")
