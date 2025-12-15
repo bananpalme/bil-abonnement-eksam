@@ -36,3 +36,11 @@ Return Service køres automatisk som en del af den overordnede Docker Compose-op
 ```bash
 # Fra roden af dit projekt (hvor docker-compose.yaml ligger):
 docker-compose up -d --build
+```
+
+Ellers kør det manuelt på port 5002
+
+```bash
+# Kør det i ReturnService folderen
+python app.py
+```
