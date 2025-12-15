@@ -31,3 +31,19 @@ Disse endpoints tilgås via **API Gateway** på port **5000**.
 ## 🗃️ Datastruktur
 
 Servicen gemmer data i tabellen `inspections`, som indeholder felter for bilinformation (`car_number`, `km_before`, `km_after`) og en række boolske felter (`seats_ok`, `steering_ok`, etc.), der sikrer den standardiserede tjekliste.
+
+
+## 🚀 Kom godt i gang
+
+Inspection startes automatisk via Docker Compose og lytter på `http://localhost:5005`.
+
+```bash
+# Fra roden af dit projekt (hvor docker-compose.yaml ligger):
+docker-compose up -d --build
+```
+
+Ellers kør det lokalt med localhost på port 5005
+```bash
+# Kør det i InspectionService folderen
+python app.py
+```
