@@ -14,9 +14,8 @@ Hovedformålet med Account Service er at:
 | Parameter | Værdi | Bemærkning |
 | :--- | :--- | :--- |
 | **Teknologi** | Python, Flask | Letvægts API til hurtig autentifikation. |
-| **Sikkerhed** | PyJWT | Håndtering af sikre, signerede JSON Web Tokens. |
+| **Sikkerhed** | JWT | Håndtering af sikre, signerede JSON Web Tokens. |
 | **Database** | **SQLite** | **Valgt til udvikling og test** for at sikre en filbaseret, nem opsætning i Docker Compose. |
-| **Persistens** | Docker Volume | Sikrer, at brugerdata (SQLite-filen) bevares mellem containergenstarter. |
 | **Port** | 5002 | Standard intern port i Docker Compose. |
 
 
