@@ -72,3 +72,10 @@ API Gateway startes automatisk via Docker Compose og lytter på `http://localhos
 ```bash
 # Fra roden af dit projekt (hvor docker-compose.yaml ligger):
 docker-compose up -d --build
+```
+
+Ellers kør det lokalt på port localhost:5000
+```bash
+# Kør det i ApiGateway folderen
+python app.py
+```
