@@ -33,3 +33,11 @@ Naviger til roden af projektet (hvor `docker-compose.yaml` ligger) og kør:
 
 ```bash
 docker-compose up -d --build
+```
+
+Hvis det skal køres manuelt skal man gå til hver microservice mappe og løbe:
+
+```bash
+# i en service folder
+python app.py
+```
