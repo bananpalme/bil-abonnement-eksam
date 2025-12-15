@@ -15,10 +15,10 @@ services:
     ports:
       - "5001:5001"
 
-  inspection_service:
+  inspection-service:
     build:
       context: ./InspectionService # Antager du har en Dockerfile i denne mappe
-    container_name: inspection_service
+    container_name: inspection-service
     ports:
       # Host port 5003 -> Container port 5003
       - "5005:5005"
@@ -47,12 +47,12 @@ services:
       - "5000:5000"
     depends_on:
       - rental-service
-      - inspection_service
+      - inspection-service
       - return-service
       
     environment:
-      - RENTAL_SERVICE_URL=http://rental_service:5001
-      - INSPECTION_SERVICE_URL=http://inspection_service:5005
+      - RENTAL_SERVICE_URL=http://rental-service:5001
+      - INSPECTION_SERVICE_URL=http://inspection-service:5005
       - RETURN_SERVICE_URL=http://return-service:5002
       - ACCOUNT_SERVICE_URL=http://account-service:5003
       - DAMAGE_SERVICE_URL=http://damage-service:5004

@@ -54,20 +54,15 @@ def see_contracts():
 
 @app.route('/api/cars', methods=['GET'])
 def cars():
-    try:
-        response = requests.get(f"{RENTAL_SERVICE_URL}/cars", timeout=10)
-        data = response.json()
-        return jsonify(data), response.status_code
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": f"Could not connect to rental service: {str(e)}"}), 503
+    headers = {"Authorization": request.headers.get("Authorization")}
+    response = requests.get(f"{RENTAL_SERVICE_URL}/cars", headers=headers)
+    return jsonify(response.json()), response.status_code
       
 
 # Inspection Service routes
 @app.route('/api/inspection', methods=['POST'])
 def create_inspection():
     response = requests.post(f"{INSPECTION_SERVICE_URL}/inspection", json=request.get_json())
-    headers = {"Authorization": request.headers.get("Authorization")}
-    response = requests.get(f"{RENTAL_SERVICE_URL}/cars", headers=headers)
     return jsonify(response.json()), response.status_code
 
 

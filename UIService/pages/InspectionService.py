@@ -3,7 +3,7 @@ import requests
 from datetime import date
 import os
 
-API_GATEWAY_URL = os.environ.get("API_GATEWAY_URL", "http://localhost:5000")
+API_GATEWAY_URL = os.environ.get("API_GATEWAY_URL", "http://localhost:5000/api")
 
 st.title("Inspection Service")
 
@@ -47,7 +47,7 @@ if st.button("Save inspection"):
     }
 
     response = requests.post(
-        f"{API_GATEWAY_URL}/api/inspection", # <-- SLUTPUNKTET ER /inspection
+        f"{API_GATEWAY_URL}/inspection", # <-- SLUTPUNKTET ER /inspection
         json=payload
     )
 
