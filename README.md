@@ -20,7 +20,7 @@ Systemet består af seks specialiserede Microservices, som orkestreres via en AP
 | **Account Service** | Flask/JWT/SQLITE | Håndterer **Login**, **Account Database** og udstedelse/validering af **JWT Tokens**. |
 | **Rental Service** | Flask/SQLITE | Håndterer oprettelse af **nye lejeaftaler** og stamdata. |
 | **Return Service** | Flask/SQLAlchemy | Håndterer afleveringsprocessen: Logger tidspunkt, modtager oplysninger og bekræfter nøgleafhentning til kunden. |
-| **Inspection Service** | Flask/SQLLITE | Leverer den **standardiserede tjekliste** til medarbejderen (eksteriør, interiør, kilometerstand) og sammenligner med tidligere registrerede skader. |
+| **Inspection Service** | Flask/SQLITE | Leverer den **standardiserede tjekliste** til medarbejderen (eksteriør, interiør, kilometerstand) og sammenligner med tidligere registrerede skader. |
 | **Damage Service** | Flask/SQLITE | Håndterer oprettelse af **digitale skadesrapporter**. Vurderer udgifter (pris pr. fejl) og lagrer dokumentation. |
 
 ## 🚀 Kom godt i gang
