@@ -17,11 +17,11 @@ Systemet består af seks specialiserede Microservices, som orkestreres via en AP
 | :--- | :--- | :--- |
 | **UI Service** | Streamlit | Frontend til test og demonstration af brugerflow (Kunde/Medarbejder). |
 | **API Gateway** | Flask/Python | Router trafikken, centraliserer adgangskontrol og fungerer som single entry point. |
-| **Account Service** | Flask/JWT | Håndterer **Login**, **Account Database** og udstedelse/validering af **JWT Tokens**. |
-| **Rental Service** | Flask/SQLAlchemy | Håndterer oprettelse af **nye lejeaftaler** og stamdata. |
+| **Account Service** | Flask/JWT/SQLLITE | Håndterer **Login**, **Account Database** og udstedelse/validering af **JWT Tokens**. |
+| **Rental Service** | Flask/SQLLITE | Håndterer oprettelse af **nye lejeaftaler** og stamdata. |
 | **Return Service** | Flask/SQLAlchemy | Håndterer afleveringsprocessen: Logger tidspunkt, modtager oplysninger og bekræfter nøgleafhentning til kunden. |
-| **Inspection Service** | Flask/Python | Leverer den **standardiserede tjekliste** til medarbejderen (eksteriør, interiør, kilometerstand) og sammenligner med tidligere registrerede skader. |
-| **Damage Service** | Flask/SQLAlchemy | Håndterer oprettelse af **digitale skadesrapporter**. Vurderer udgifter (pris pr. fejl) og lagrer dokumentation. |
+| **Inspection Service** | Flask/SQLLITE | Leverer den **standardiserede tjekliste** til medarbejderen (eksteriør, interiør, kilometerstand) og sammenligner med tidligere registrerede skader. |
+| **Damage Service** | Flask/SQLLITE | Håndterer oprettelse af **digitale skadesrapporter**. Vurderer udgifter (pris pr. fejl) og lagrer dokumentation. |
 
 ## 🚀 Kom godt i gang
 
