@@ -29,6 +29,7 @@ Disse endpoints tilgås via **API Gateway** på port **5000**.
 | `/api/profile ` | `POST` | Registrerer en ny brugerkonto (username, password, role) i databasen. (Bruges typisk til systemopsætning). | `{ Brugerregistrering Payload: { "username": "...", "password": "...", "role": "..." }` |
 | `/api/profile ` | `GET ` | Kræver et gyldigt JWT-token. Henter den aktuelle brugers profilinformation (username, id, role).. | Beskyttet Ressource (Kræver JWT i headeren)|
 
+## 🚀 Kom godt i gang
 
 ### Kørsel (via Docker Compose)
 
